@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 切换轨言轨语开关。
+# 用法: kiseki-toggle [on|off|toggle]   (默认 toggle)
+set -euo pipefail
+
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+file="$dir/state"
+arg="${1:-toggle}"
+
+cur=""
+if [ -f "$file" ]; then
+  cur="$(tr -d '[:space:]' < "$file")"
+fi
+[ "$cur" = "on" ] || [ "$cur" = "off" ] || cur="on"
+
+case "$arg" in
+  on|off) new="$arg" ;;
+  toggle) if [ "$cur" = "on" ]; then new="off"; else new="on"; fi ;;
+  *)
+    echo "用法: kiseki-toggle [on|off|toggle]" >&2
+    exit 2
+    ;;
+esac
+
+printf '%s\n' "$new" > "$file"
+echo "$new"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# 输出轨言轨语开关状态：on / off。文件不存在按 on。
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+state="$(cat "$dir/state" 2>/dev/null | tr -d '[:space:]')"
+case "$state" in
+  on|off) echo "$state" ;;
+  *) echo "on" ;;
+esac

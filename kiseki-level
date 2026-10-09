@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# 读 / 写轨言轨语浓度：light | medium | heavy
+# 无参数 = 读；带参数 = 写。
+set -euo pipefail
+
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+file="$dir/level"
+
+if [ $# -eq 0 ]; then
+  cur=""
+  if [ -f "$file" ]; then
+    cur="$(tr -d '[:space:]' < "$file")"
+  fi
+  case "$cur" in
+    light|medium|heavy) echo "$cur" ;;
+    *) echo "medium" ;;
+  esac
+  exit 0
+fi
+
+case "$1" in
+  light|medium|heavy)
+    printf '%s\n' "$1" > "$file"
+    echo "$1"
+    ;;
+  *)
+    echo "用法: kiseki-level [light|medium|heavy]" >&2
+    exit 2
+    ;;
+esac

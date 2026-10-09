@@ -1,0 +1,4 @@
+state
+level
+*.bak-*
+.DS_Store
